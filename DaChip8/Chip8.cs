@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace DanTup.DaChip8
@@ -13,14 +14,13 @@ namespace DanTup.DaChip8
 		// Timers
 		byte Delay, Sound;
 		// Address/Program Counters
-		ushort I, PC;
+		ushort I, PC = 0x200;
 		// Stack
 		byte SP;
 		ushort[] Stack = new ushort[16];
 
 		// Memory & ROM
 		byte[] RAM = new byte[0x1000];
-		byte[] Program;
 
 		// OpCodes
 		Dictionary<byte, Action<OpCodeData>> opCodes;
@@ -71,7 +71,7 @@ namespace DanTup.DaChip8
 
 		public void LoadProgram(byte[] data)
 		{
-			Program = data;
+			Array.Copy(data, 0, RAM, 0x200, data.Length);
 		}
 
 		public void Tick()
@@ -81,16 +81,17 @@ namespace DanTup.DaChip8
 			if (Sound > 0)
 				Sound--;
 
-
 			// Read the two bytes of OpCode (big endian).
-			var opCode = (ushort)(Program[PC++] << 8 | Program[PC++]);
+			var opCode = (ushort)(RAM[PC++] << 8 | RAM[PC++]);
+
+			Debug.WriteLine(opCode.ToString("X2"));
 
 			// Split data into the possible formats the instruction might need.
 			// https://en.wikipedia.org/wiki/CHIP-8#Opcode_table
 			var op = new OpCodeData()
 			{
 				OpCode = opCode,
-				NNN = (ushort)(opCode & 0x0FFFF),
+				NNN = (ushort)(opCode & 0x00FFF),
 				X = (byte)(opCode & 0x0F00 >> 8),
 				Y = (byte)(opCode & 0x00F0 >> 4),
 				N = (byte)(opCode & 0x000F)
