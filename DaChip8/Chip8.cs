@@ -35,7 +35,7 @@ namespace DanTup.DaChip8
 				{ 0x1, Jump },
 				{ 0x2, CallSubroutine },
 				{ 0x3, SkipIfXEqual },
-				{ 0x4, SqipIfXNotEqual },
+				{ 0x4, SkipIfXNotEqual },
 				{ 0x5, SkipIfXEqualY },
 				{ 0x6, SetX },
 				{ 0x7, AddX },
@@ -103,13 +103,45 @@ namespace DanTup.DaChip8
 			PC = data.NNN;
 		}
 
-		void SkipIfXEqual(OpCodeData data) { }
-		void SqipIfXNotEqual(OpCodeData data) { }
-		void SkipIfXEqualY(OpCodeData data) { }
+		/// <summary>
+		/// Skips the next instruction (two bytes) if V[x] == nn.
+		/// </summary>
+		void SkipIfXEqual(OpCodeData data)
+		{
+			if (V[data.X] == data.NN)
+				PC += 2;
+		}
+
+		/// <summary>
+		/// Skips the next instruction (two bytes) if V[x] != nn.
+		/// </summary>
+		void SkipIfXNotEqual(OpCodeData data)
+		{
+			if (V[data.X] != data.NN)
+				PC += 2;
+		}
+
+		/// <summary>
+		/// Skips the next instruction (two bytes) if V[x] == V[y].
+		/// </summary>
+		void SkipIfXEqualY(OpCodeData data)
+		{
+			if (V[data.X] == V[data.Y])
+				PC += 2;
+		}
+
+		/// <summary>
+		/// Skips the next instruction (two bytes) if V[x] != V[y].
+		/// </summary>
+		void SkipIfXNotEqualY(OpCodeData data)
+		{
+			if (V[data.X] != V[data.Y])
+				PC += 2;
+		}
+
 		void SetX(OpCodeData data) { }
 		void AddX(OpCodeData data) { }
 		void SetXFromY(OpCodeData data) { }
-		void SkipIfXNotEqualY(OpCodeData data) { }
 		void SetI(OpCodeData data) { }
 		void JumpWithOffset(OpCodeData data) { }
 		void Rnd(OpCodeData data) { }
