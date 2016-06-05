@@ -24,6 +24,7 @@ namespace DanTup.DaChip8
 
 		// OpCodes
 		Dictionary<byte, Action<OpCodeData>> opCodes;
+		Dictionary<byte, Action<OpCodeData>> opCodesMisc;
 
 		Random rnd = new Random();
 
@@ -53,6 +54,19 @@ namespace DanTup.DaChip8
 				{ 0xE, SkipOnKey },
 				{ 0xF, Misc },
 			};
+
+			opCodesMisc = new Dictionary<byte, Action<OpCodeData>>
+			{
+				{ 0x07, SetXToDelay },
+				{ 0x0A, WaitForKey },
+				{ 0x15, SetDelay },
+				{ 0x18, SetSound },
+				{ 0x1E, AddXToI },
+				{ 0x29, SetIForChar },
+				{ 0x33, BinaryCodedDecimal },
+				{ 0x55, SaveX },
+				{ 0x65, LoadX },
+			};
 		}
 
 		public void LoadProgram(byte[] data)
@@ -79,6 +93,9 @@ namespace DanTup.DaChip8
 			// Loop up the OpCode using the first nibble and execute.
 			opCodes[(byte)(opCode >> 12)](op);
 		}
+
+		// Misc has its own dictionary because it's full of random stuff.
+		void Misc(OpCodeData data) => opCodesMisc[data.NN](data);
 
 		public void KeyDown(byte key) => pressedKeys.Add(key);
 		public void KeyUp(byte key) => pressedKeys.Remove(key);
@@ -242,9 +259,15 @@ namespace DanTup.DaChip8
 				PC += 2;
 		}
 
-		void Misc(OpCodeData data)
-		{
-		}
+		void SetXToDelay(OpCodeData data) { }
+		void WaitForKey(OpCodeData data) { }
+		void SetDelay(OpCodeData data) { }
+		void SetSound(OpCodeData data) { }
+		void AddXToI(OpCodeData data) { }
+		void SetIForChar(OpCodeData data) { }
+		void BinaryCodedDecimal(OpCodeData data) { }
+		void SaveX(OpCodeData data) { }
+		void LoadX(OpCodeData data) { }
 
 		/// <summary>
 		/// Pushes a 16-bit value onto the stack, incrementing the SP.
