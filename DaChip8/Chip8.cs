@@ -27,6 +27,9 @@ namespace DanTup.DaChip8
 
 		Random rnd = new Random();
 
+		// Keys that are currently pressed.
+		HashSet<byte> pressedKeys = new HashSet<byte>();
+
 		public Chip8(Bitmap screen)
 		{
 			this.screen = screen;
@@ -76,6 +79,9 @@ namespace DanTup.DaChip8
 			// Loop up the OpCode using the first nibble and execute.
 			opCodes[(byte)(opCode >> 12)](op);
 		}
+
+		public void KeyDown(byte key) => pressedKeys.Add(key);
+		public void KeyUp(byte key) => pressedKeys.Remove(key);
 
 		// http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.1
 
@@ -216,9 +222,29 @@ namespace DanTup.DaChip8
 		/// </summary>
 		void Rnd(OpCodeData data) => V[data.X] = (byte)(rnd.Next(0, 256) & data.NN);
 
-		void DrawSprite(OpCodeData data) { }
-		void SkipOnKey(OpCodeData data) { }
-		void Misc(OpCodeData data) { }
+		/// <summary>
+		/// Draws an n-byte sprite from register I at V[x], V[y]. Sets V[0xF] if it collides.
+		/// </summary>
+		void DrawSprite(OpCodeData data)
+		{
+			// TODO: ...
+		}
+
+		/// <summary>
+		/// Skips th enext instruction based on the key at V[x] being pressed/not pressed.
+		/// </summary>
+		void SkipOnKey(OpCodeData data)
+		{
+			if (
+				(data.NN == 0x9E && pressedKeys.Contains(V[data.X])) // 9E = IfKeyPressed
+				|| (data.NN == 0xA1 && !pressedKeys.Contains(V[data.X])) // A1 = IfKeyNotPressed
+			)
+				PC += 2;
+		}
+
+		void Misc(OpCodeData data)
+		{
+		}
 
 		/// <summary>
 		/// Pushes a 16-bit value onto the stack, incrementing the SP.
