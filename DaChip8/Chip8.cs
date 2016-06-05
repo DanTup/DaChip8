@@ -76,6 +76,12 @@ namespace DanTup.DaChip8
 
 		public void Tick()
 		{
+			if (Delay > 0)
+				Delay--;
+			if (Sound > 0)
+				Sound--;
+
+
 			// Read the two bytes of OpCode (big endian).
 			var opCode = (ushort)(Program[PC++] << 8 | Program[PC++]);
 
@@ -259,6 +265,9 @@ namespace DanTup.DaChip8
 				PC += 2;
 		}
 
+		/// <summary>
+		/// Waits for a key to be pressed by looping at the current instruction.
+		/// </summary>
 		void WaitForKey(OpCodeData data)
 		{
 			// If we have a key pressed, store it and more on.
@@ -269,9 +278,21 @@ namespace DanTup.DaChip8
 				PC -= 2;
 		}
 
-		void SetXToDelay(OpCodeData data) { }
-		void SetDelay(OpCodeData data) { }
-		void SetSound(OpCodeData data) { }
+		/// <summary>
+		/// Sets V[x] to equal the Delay register.
+		/// </summary>
+		void SetXToDelay(OpCodeData data) => V[data.X] = Delay;
+
+		/// <summary>
+		/// Sets the delay register to V[x].
+		/// </summary>
+		void SetDelay(OpCodeData data) => Delay = V[data.X];
+
+		/// <summary>
+		/// Sets the sound register to V[x].
+		/// </summary>
+		void SetSound(OpCodeData data) => Sound = V[data.X];
+
 		void AddXToI(OpCodeData data) { }
 		void SetIForChar(OpCodeData data) { }
 		void BinaryCodedDecimal(OpCodeData data) { }
