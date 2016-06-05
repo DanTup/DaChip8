@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 
 namespace DanTup.DaChip8
@@ -10,6 +11,7 @@ namespace DanTup.DaChip8
 	{
 		readonly Chip8 chip8;
 		readonly Bitmap screen;
+		readonly string ROM = "../../../ROMs/Chip-8 Pack/Chip-8 Games/Pong (1 player).ch8";
 
 		// For timing..
 		readonly Stopwatch stopWatch = Stopwatch.StartNew();
@@ -22,6 +24,7 @@ namespace DanTup.DaChip8
 
 			screen = new Bitmap(64, 32, PixelFormat.Format1bppIndexed);
 			chip8 = new Chip8(screen);
+			chip8.LoadProgram(File.ReadAllBytes(ROM));
 
 			Application.Idle += IdleTick;
 		}

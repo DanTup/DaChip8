@@ -12,10 +12,16 @@ namespace DanTup.DaChip8
 		ushort I, PC;
 		ushort[] Stack = new ushort[16];
 		byte[] RAM = new byte[0x1000];
+		byte[] Program;
 
 		public Chip8(Bitmap screen)
 		{
 			this.screen = screen;
+		}
+
+		public void LoadProgram(byte[] data)
+		{
+			Program = data;
 		}
 
 		public void Tick()
