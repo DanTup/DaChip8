@@ -314,8 +314,23 @@ namespace DanTup.DaChip8
 			RAM[I + 2] = (byte)(V[data.X] % 10);
 		}
 
-		void SaveX(OpCodeData data) { }
-		void LoadX(OpCodeData data) { }
+		/// <summary>
+		/// Saves all registers to the address in register I.
+		/// </summary>
+		void SaveX(OpCodeData data)
+		{
+			for (var i = 0; i < 16; i++)
+				RAM[I + i] = V[i];
+		}
+
+		/// <summary>
+		/// Loads all registers from the address in register I.
+		/// </summary>
+		void LoadX(OpCodeData data)
+		{
+			for (var i = 0; i < 16; i++)
+				V[i] = RAM[I + i];
+		}
 
 		/// <summary>
 		/// Pushes a 16-bit value onto the stack, incrementing the SP.
