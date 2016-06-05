@@ -75,6 +75,9 @@ namespace DanTup.DaChip8
 			opCodes[(byte)(opCode >> 12)](op);
 		}
 
+		/// <summary>
+		/// Handles 0x0... which either clears the screen or returns from a subroutine.
+		/// </summary>
 		void ClearOrReturn(OpCodeData data)
 		{
 			if (data.NN == 0xE0)
@@ -86,8 +89,20 @@ namespace DanTup.DaChip8
 				PC = Pop();
 		}
 
-		void Jump(OpCodeData data) { }
-		void CallSubroutine(OpCodeData data) { }
+		/// <summary>
+		/// Jumps to another location (not a subroutine, so old PC is not pushed to the stack).
+		/// </summary>
+		void Jump(OpCodeData data) => PC = data.NNN;
+
+		/// <summary>
+		/// Jumps to a subroutine (unlike Jump, this pushes the previous PC to the stack to allow return).
+		/// </summary>
+		void CallSubroutine(OpCodeData data)
+		{
+			Push(PC);
+			PC = data.NNN;
+		}
+
 		void SkipIfXEqual(OpCodeData data) { }
 		void SqipIfXNotEqual(OpCodeData data) { }
 		void SkipIfXEqualY(OpCodeData data) { }
