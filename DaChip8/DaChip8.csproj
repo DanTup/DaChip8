@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chip8.cs" />
+    <Compile Include="OpCodeData.cs" />
     <Compile Include="Screen.cs">
       <SubType>Form</SubType>
     </Compile>
