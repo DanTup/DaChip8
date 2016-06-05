@@ -293,9 +293,27 @@ namespace DanTup.DaChip8
 		/// </summary>
 		void SetSound(OpCodeData data) => Sound = V[data.X];
 
-		void AddXToI(OpCodeData data) { }
-		void SetIForChar(OpCodeData data) { }
-		void BinaryCodedDecimal(OpCodeData data) { }
+		/// <summary>
+		/// Adds V[x] to register I.
+		/// </summary>
+		void AddXToI(OpCodeData data) => I += V[data.X];
+
+		void SetIForChar(OpCodeData data)
+		{
+			// TODO: !
+		}
+
+		/// <summary>
+		/// Takes the decimal representation of V[x] and puts each character into memory locations
+		/// starting at I (with a maximum of 3).
+		/// </summary>
+		void BinaryCodedDecimal(OpCodeData data)
+		{
+			RAM[I + 0] = (byte)((V[data.X] / 100) % 10);
+			RAM[I + 1] = (byte)((V[data.X] / 10) % 10);
+			RAM[I + 2] = (byte)(V[data.X] % 10);
+		}
+
 		void SaveX(OpCodeData data) { }
 		void LoadX(OpCodeData data) { }
 
