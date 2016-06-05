@@ -75,7 +75,17 @@ namespace DanTup.DaChip8
 			opCodes[(byte)(opCode >> 12)](op);
 		}
 
-		void ClearOrReturn(OpCodeData data) { }
+		void ClearOrReturn(OpCodeData data)
+		{
+			if (data.NN == 0xE0)
+			{
+				using (var g = Graphics.FromImage(screen))
+					g.Clear(Color.Black);
+			}
+			else if (data.NN == 0xEE)
+				PC = Pop();
+		}
+
 		void Jump(OpCodeData data) { }
 		void CallSubroutine(OpCodeData data) { }
 		void SkipIfXEqual(OpCodeData data) { }
@@ -91,5 +101,8 @@ namespace DanTup.DaChip8
 		void DrawSprite(OpCodeData data) { }
 		void SkipOnKey(OpCodeData data) { }
 		void Misc(OpCodeData data) { }
+
+		void Push(ushort value) => Stack[SP++] = value;
+		ushort Pop() => Stack[SP--];
 	}
 }
