@@ -44,11 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DaChip8.cs">
+    <Compile Include="Screen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DaChip8.Designer.cs">
-      <DependentUpon>DaChip8.cs</DependentUpon>
+    <Compile Include="Screen.Designer.cs">
+      <DependentUpon>Screen.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
   </ItemGroup>

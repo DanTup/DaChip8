@@ -2,9 +2,9 @@
 
 namespace DanTup.DaChip8
 {
-	public partial class DaChip8 : Form
+	public partial class Screen : Form
 	{
-		public DaChip8()
+		public Screen()
 		{
 			InitializeComponent();
 		}

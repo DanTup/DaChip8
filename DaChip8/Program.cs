@@ -10,7 +10,7 @@ namespace DanTup.DaChip8
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new DaChip8());
+			Application.Run(new Screen());
 		}
 	}
 }

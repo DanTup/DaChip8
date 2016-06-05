@@ -1,6 +1,6 @@
 ﻿namespace DanTup.DaChip8
 {
-	partial class DaChip8
+	partial class Screen
 	{
 		/// <summary>
 		/// Required designer variable.
