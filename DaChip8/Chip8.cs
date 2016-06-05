@@ -259,8 +259,17 @@ namespace DanTup.DaChip8
 				PC += 2;
 		}
 
+		void WaitForKey(OpCodeData data)
+		{
+			// If we have a key pressed, store it and more on.
+			if (pressedKeys.Count != 0)
+				V[data.X] = pressedKeys.GetEnumerator().Current;
+			else
+				// Otherwise, wind the PC back so we will keep executing this instruction.
+				PC -= 2;
+		}
+
 		void SetXToDelay(OpCodeData data) { }
-		void WaitForKey(OpCodeData data) { }
 		void SetDelay(OpCodeData data) { }
 		void SetSound(OpCodeData data) { }
 		void AddXToI(OpCodeData data) { }
