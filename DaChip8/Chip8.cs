@@ -39,7 +39,7 @@ namespace DanTup.DaChip8
 				{ 0x5, SkipIfXEqualY },
 				{ 0x6, SetX },
 				{ 0x7, AddX },
-				{ 0x8, SetXFromY },
+				{ 0x8, Arithmetic },
 				{ 0x9, SkipIfXNotEqualY },
 				{ 0xA, SetI },
 				{ 0xB, JumpWithOffset },
@@ -75,6 +75,8 @@ namespace DanTup.DaChip8
 			opCodes[(byte)(opCode >> 12)](op);
 		}
 
+		// http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#3.1
+
 		/// <summary>
 		/// Handles 0x0... which either clears the screen or returns from a subroutine.
 		/// </summary>
@@ -90,12 +92,12 @@ namespace DanTup.DaChip8
 		}
 
 		/// <summary>
-		/// Jumps to another location (not a subroutine, so old PC is not pushed to the stack).
+		/// Jumps to location nnn (not a subroutine, so old PC is not pushed to the stack).
 		/// </summary>
 		void Jump(OpCodeData data) => PC = data.NNN;
 
 		/// <summary>
-		/// Jumps to a subroutine (unlike Jump, this pushes the previous PC to the stack to allow return).
+		/// Jumps to subroutine nnn (unlike Jump, this pushes the previous PC to the stack to allow return).
 		/// </summary>
 		void CallSubroutine(OpCodeData data)
 		{
@@ -139,10 +141,66 @@ namespace DanTup.DaChip8
 				PC += 2;
 		}
 
-		void SetX(OpCodeData data) { }
-		void AddX(OpCodeData data) { }
-		void SetXFromY(OpCodeData data) { }
+		/// <summary>
+		/// Sets V[x] == nn.
+		/// </summary>
+		void SetX(OpCodeData data)
+		{
+			V[data.X] = data.NN;
+		}
+
+		/// <summary>
+		/// Adds nn to V[x].
+		/// </summary>
+		void AddX(OpCodeData data)
+		{
+			V[data.X] += data.NN; // TODO: Do we need to handle overflow?
+		}
+
+		/// <summary>
+		/// Sets V[x] to V[y].
+		/// </summary>
+		void Arithmetic(OpCodeData data)
+		{
+			switch (data.N)
+			{
+				case 0x0:
+					V[data.X] = V[data.Y];
+					break;
+				case 0x1:
+					V[data.X] |= V[data.Y];
+					break;
+				case 0x2:
+					V[data.X] &= V[data.Y];
+					break;
+				case 0x3:
+					V[data.X] ^= V[data.Y];
+					break;
+				case 0x4:
+					V[0xF] = (byte)(V[data.X] + V[data.Y] > 0xFF ? 1 : 0); // Set flag if we overflowed.
+					V[data.X] += V[data.Y];
+					break;
+				case 0x5:
+					V[0xF] = (byte)(V[data.X] > V[data.Y] ? 1 : 0); // Set flag if we underflowed.
+					V[data.X] -= V[data.Y];
+					break;
+				case 0x6:
+					V[0xF] = (byte)((V[data.X] & 0x1) != 0 ? 1 : 0); // Set flag if we shifted a 1 off the end.
+					V[data.X] /= 2; // Shift right.
+					break;
+				case 0x7: // Note: This is Y-X, 5 was X-Y.
+					V[0xF] = (byte)(V[data.Y] > V[data.X] ? 1 : 0); // Set flag if we underflowed.
+					V[data.Y] -= V[data.X];
+					break;
+				case 0xE:
+					V[0xF] = (byte)((V[data.X] & 0xF) != 0 ? 1 : 0); // Set flag if we shifted a 1 off the end.
+					V[data.X] *= 2; // Shift left.
+					break;
+			}
+		}
+
 		void SetI(OpCodeData data) { }
+
 		void JumpWithOffset(OpCodeData data) { }
 		void Rnd(OpCodeData data) { }
 		void DrawSprite(OpCodeData data) { }
