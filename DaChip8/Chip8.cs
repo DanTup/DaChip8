@@ -25,6 +25,8 @@ namespace DanTup.DaChip8
 		// OpCodes
 		Dictionary<byte, Action<OpCodeData>> opCodes;
 
+		Random rnd = new Random();
+
 		public Chip8(Bitmap screen)
 		{
 			this.screen = screen;
@@ -95,6 +97,11 @@ namespace DanTup.DaChip8
 		/// Jumps to location nnn (not a subroutine, so old PC is not pushed to the stack).
 		/// </summary>
 		void Jump(OpCodeData data) => PC = data.NNN;
+
+		/// <summary>
+		/// Jumps to location nnn + v[0] (not a subroutine, so old PC is not pushed to the stack).
+		/// </summary>
+		void JumpWithOffset(OpCodeData data) => PC = (ushort)(data.NNN + V[0]);
 
 		/// <summary>
 		/// Jumps to subroutine nnn (unlike Jump, this pushes the previous PC to the stack to allow return).
@@ -199,15 +206,28 @@ namespace DanTup.DaChip8
 			}
 		}
 
-		void SetI(OpCodeData data) { }
+		/// <summary>
+		/// Sets the I register.
+		/// </summary>
+		void SetI(OpCodeData data) => I = data.NNN;
 
-		void JumpWithOffset(OpCodeData data) { }
-		void Rnd(OpCodeData data) { }
+		/// <summary>
+		/// ANDs a random number with nn and stores in V[x].
+		/// </summary>
+		void Rnd(OpCodeData data) => V[data.X] = (byte)(rnd.Next(0, 256) & data.NN);
+
 		void DrawSprite(OpCodeData data) { }
 		void SkipOnKey(OpCodeData data) { }
 		void Misc(OpCodeData data) { }
 
+		/// <summary>
+		/// Pushes a 16-bit value onto the stack, incrementing the SP.
+		/// </summary>
 		void Push(ushort value) => Stack[SP++] = value;
+
+		/// <summary>
+		/// Retrieves a 16-bit value from the stack, decrementing the SP.
+		/// </summary>
 		ushort Pop() => Stack[SP--];
 	}
 }
