@@ -337,9 +337,13 @@ namespace DanTup.DaChip8
 		/// </summary>
 		void AddXToI(OpCodeData data) => I += V[data.X];
 
+		/// <summary>
+		/// Sets I to the correct location of the font sprite V[x].
+		/// Each font sprite is 5 bytes long.
+		/// </summary>
 		void SetIForChar(OpCodeData data)
 		{
-			// TODO: !
+			I = (ushort)(V[data.X] * 5); // 0 is at 0x0, 1 is at 0x5, ...
 		}
 
 		/// <summary>
