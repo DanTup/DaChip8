@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 
@@ -26,7 +25,7 @@ namespace DanTup.DaChip8
 		{
 			InitializeComponent();
 
-			screen = new Bitmap(64, 32, PixelFormat.Format1bppIndexed);
+			screen = new Bitmap(64, 32);
 			chip8 = new Chip8(screen);
 			chip8.LoadProgram(File.ReadAllBytes(ROM));
 

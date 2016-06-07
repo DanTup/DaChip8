@@ -165,8 +165,9 @@ namespace DanTup.DaChip8
 		{
 			if (data.NN == 0xE0)
 			{
-				using (var g = Graphics.FromImage(screen))
-					g.Clear(Color.Black);
+				for (var x = 0; x < screen.Width; x++)
+					for (var y = 0; y < screen.Height; y++)
+						buffer[x, y] = false;
 			}
 			else if (data.NN == 0xEE)
 				PC = Pop();
