@@ -8,7 +8,7 @@ namespace DanTup.DaChip8
 	class Chip8
 	{
 		Bitmap screen; // 64x32
-		bool[,] buffer = new bool[64, 32];
+		bool[,] buffer;
 
 		// Registers
 		byte[] V = new byte[16];
@@ -35,6 +35,7 @@ namespace DanTup.DaChip8
 		public Chip8(Bitmap screen)
 		{
 			this.screen = screen;
+			this.buffer = new bool[screen.Width, screen.Height];
 
 			WriteFont();
 
@@ -138,6 +139,23 @@ namespace DanTup.DaChip8
 				Delay--;
 			if (Sound > 0)
 				Sound--;
+
+			UpdateScreen();
+		}
+
+		void UpdateScreen()
+		{
+			using (var g = Graphics.FromImage(screen))
+				g.Clear(Color.Black);
+
+			for (var x = 0; x < screen.Width; x++)
+			{
+				for (var y = 0; y < screen.Height; y++)
+				{
+					if (buffer[x, y])
+						screen.SetPixel(x, y, Color.White);
+				}
+			}
 		}
 
 		// Misc has its own dictionary because it's full of random stuff.
@@ -296,8 +314,8 @@ namespace DanTup.DaChip8
 
 				for (var bit = 0; bit < 8; bit++)
 				{
-					var x = data.X + bit;
-					var y = data.Y + i;
+					var x = (data.X + bit) % screen.Width;
+					var y = (data.Y + i) % screen.Height;
 
 					var spriteBit = ((spriteLine >> bit) & 1);
 					var oldBit = buffer[x, y] ? 1 : 0;
