@@ -311,7 +311,7 @@ namespace DanTup.DaChip8
 
 				for (var bit = 0; bit < 8; bit++)
 				{
-					var x = (startX + bit) % screen.Width;
+					var x = (startX + (8 - bit)) % screen.Width;
 					var y = (startY + i) % screen.Height;
 
 					var spriteBit = ((spriteLine >> bit) & 1);
