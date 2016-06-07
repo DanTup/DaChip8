@@ -35,6 +35,8 @@ namespace DanTup.DaChip8
 		{
 			this.screen = screen;
 
+			WriteFont();
+
 			opCodes = new Dictionary<byte, Action<OpCodeData>>
 			{
 				{ 0x0, ClearOrReturn },
@@ -67,6 +69,37 @@ namespace DanTup.DaChip8
 				{ 0x55, SaveX },
 				{ 0x65, LoadX },
 			};
+		}
+
+		void WriteFont()
+		{
+			var offset = 0x0;
+			WriteFont(5 * offset++, Font.D0);
+			WriteFont(5 * offset++, Font.D1);
+			WriteFont(5 * offset++, Font.D2);
+			WriteFont(5 * offset++, Font.D3);
+			WriteFont(5 * offset++, Font.D4);
+			WriteFont(5 * offset++, Font.D5);
+			WriteFont(5 * offset++, Font.D6);
+			WriteFont(5 * offset++, Font.D7);
+			WriteFont(5 * offset++, Font.D8);
+			WriteFont(5 * offset++, Font.D9);
+			WriteFont(5 * offset++, Font.DA);
+			WriteFont(5 * offset++, Font.DB);
+			WriteFont(5 * offset++, Font.DC);
+			WriteFont(5 * offset++, Font.DD);
+			WriteFont(5 * offset++, Font.DE);
+			WriteFont(5 * offset++, Font.DF);
+		}
+
+		void WriteFont(int address, long fontData)
+		{
+			// Fonts are 4-bits wide, but we need to write them a byte wide, so pad each "line".
+			WriteFont(address + 0, (fontData & 0xF0000) >> 3);
+			WriteFont(address + 1, (fontData & 0x0F000) >> 2);
+			WriteFont(address + 2, (fontData & 0x00F00) >> 1);
+			WriteFont(address + 3, (fontData & 0x000F0) >> 0);
+			WriteFont(address + 4, (fontData & 0x0000F) << 1);
 		}
 
 		public void LoadProgram(byte[] data)
