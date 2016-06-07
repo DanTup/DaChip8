@@ -97,11 +97,11 @@ namespace DanTup.DaChip8
 		void WriteFont(int address, long fontData)
 		{
 			// Fonts are 4-bits wide, but we need to write them a byte wide, so pad each "line".
-			WriteFont(address + 0, (fontData & 0xF0000) >> 3);
-			WriteFont(address + 1, (fontData & 0x0F000) >> 2);
-			WriteFont(address + 2, (fontData & 0x00F00) >> 1);
-			WriteFont(address + 3, (fontData & 0x000F0) >> 0);
-			WriteFont(address + 4, (fontData & 0x0000F) << 1);
+			RAM[address + 0] = (byte)((fontData & 0xF0000) >> 3);
+			RAM[address + 1] = (byte)((fontData & 0x0F000) >> 2);
+			RAM[address + 2] = (byte)((fontData & 0x00F00) >> 1);
+			RAM[address + 3] = (byte)((fontData & 0x000F0) >> 0);
+			RAM[address + 4] = (byte)((fontData & 0x0000F) << 1);
 		}
 
 		public void LoadProgram(byte[] data)
