@@ -301,6 +301,9 @@ namespace DanTup.DaChip8
 		/// </summary>
 		void DrawSprite(OpCodeData data)
 		{
+			var startX = V[data.X];
+			var startY = V[data.Y];
+
 			V[0xF] = 0;
 			for (var i = 0; i < data.N; i++)
 			{
@@ -308,8 +311,8 @@ namespace DanTup.DaChip8
 
 				for (var bit = 0; bit < 8; bit++)
 				{
-					var x = (data.X + bit) % screen.Width;
-					var y = (data.Y + i) % screen.Height;
+					var x = (startX + bit) % screen.Width;
+					var y = (startY + i) % screen.Height;
 
 					var spriteBit = ((spriteLine >> bit) & 1);
 					var oldBit = buffer[x, y] ? 1 : 0;
@@ -317,7 +320,7 @@ namespace DanTup.DaChip8
 					// New bit is XOR of existing and new.
 					var newBit = oldBit ^ spriteBit;
 
-					buffer[data.X + bit, data.Y + i] = newBit != 0;
+					buffer[x, y] = newBit != 0;
 
 					// If we wiped out a pixel, set flag for collission.
 					if (oldBit != 0 && newBit == 0)
