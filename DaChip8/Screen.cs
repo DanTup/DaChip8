@@ -26,6 +26,8 @@ namespace DanTup.DaChip8
 			InitializeComponent();
 
 			screen = new Bitmap(64, 32);
+			pbScreen.Image = screen;
+
 			chip8 = new Chip8(screen);
 			chip8.LoadProgram(File.ReadAllBytes(ROM));
 
@@ -77,12 +79,16 @@ namespace DanTup.DaChip8
 				elapsedTime -= targetElapsedTime;
 				lastTime += targetElapsedTime;
 			}
-			Tick();
 
+			Tick();
 			Invalidate();
 		}
 
 		void Tick() => chip8.Tick();
-		void Tick60Hz() => chip8.Tick60Hz();
+		void Tick60Hz()
+		{
+			chip8.Tick60Hz();
+			pbScreen.Refresh();
+		}
 	}
 }
