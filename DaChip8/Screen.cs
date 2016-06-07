@@ -74,17 +74,16 @@ namespace DanTup.DaChip8
 
 			while (elapsedTime >= targetElapsedTime)
 			{
-				Tick();
+				Tick60Hz();
 				elapsedTime -= targetElapsedTime;
 				lastTime += targetElapsedTime;
 			}
+			Tick();
 
 			Invalidate();
 		}
 
-		void Tick()
-		{
-			chip8.Tick();
-		}
+		void Tick() => chip8.Tick();
+		void Tick60Hz() => chip8.Tick60Hz();
 	}
 }

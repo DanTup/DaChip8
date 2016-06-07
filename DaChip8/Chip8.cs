@@ -76,11 +76,6 @@ namespace DanTup.DaChip8
 
 		public void Tick()
 		{
-			if (Delay > 0)
-				Delay--;
-			if (Sound > 0)
-				Sound--;
-
 			// Read the two bytes of OpCode (big endian).
 			var opCode = (ushort)(RAM[PC++] << 8 | RAM[PC++]);
 
@@ -100,6 +95,15 @@ namespace DanTup.DaChip8
 
 			// Loop up the OpCode using the first nibble and execute.
 			opCodes[(byte)(opCode >> 12)](op);
+		}
+
+		public void Tick60Hz()
+		{
+			Debug.WriteLine("60Hz tick");
+			if (Delay > 0)
+				Delay--;
+			if (Sound > 0)
+				Sound--;
 		}
 
 		// Misc has its own dictionary because it's full of random stuff.
