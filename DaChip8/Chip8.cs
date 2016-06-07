@@ -145,17 +145,9 @@ namespace DanTup.DaChip8
 
 		void UpdateScreen()
 		{
-			using (var g = Graphics.FromImage(screen))
-				g.Clear(Color.Black);
-
 			for (var x = 0; x < screen.Width; x++)
-			{
 				for (var y = 0; y < screen.Height; y++)
-				{
-					if (buffer[x, y])
-						screen.SetPixel(x, y, Color.White);
-				}
-			}
+					screen.SetPixel(x, y, buffer[x, y] ? Color.White : Color.Black);
 		}
 
 		// Misc has its own dictionary because it's full of random stuff.
