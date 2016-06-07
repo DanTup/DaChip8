@@ -11,7 +11,7 @@ namespace DanTup.DaChip8
 	{
 		readonly Chip8 chip8;
 		readonly Bitmap screen;
-		readonly string ROM = "../../../ROMs/Chip-8 Pack/Chip-8 Games/Pong (1 player).ch8";
+		readonly string ROM = "../../../ROMs/Chip-8 Pack/Chip-8 Programs/Chip8 Picture.ch8";
 
 		// For timing..
 		readonly Stopwatch stopWatch = Stopwatch.StartNew();

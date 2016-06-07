@@ -301,6 +301,7 @@ namespace DanTup.DaChip8
 		/// </summary>
 		void DrawSprite(OpCodeData data)
 		{
+			V[0xF] = 0;
 			for (var i = 0; i < data.N; i++)
 			{
 				var spriteLine = RAM[I + i]; // A line of the sprite to render
@@ -326,7 +327,7 @@ namespace DanTup.DaChip8
 		}
 
 		/// <summary>
-		/// Skips th enext instruction based on the key at V[x] being pressed/not pressed.
+		/// Skips the next instruction based on the key at V[x] being pressed/not pressed.
 		/// </summary>
 		void SkipOnKey(OpCodeData data)
 		{
