@@ -147,7 +147,7 @@ namespace DanTup.DaChip8
 		{
 			for (var x = 0; x < screen.Width; x++)
 				for (var y = 0; y < screen.Height; y++)
-					screen.SetPixel(x, y, buffer[x, y] ? Color.White : Color.Black);
+					screen.SetPixel(x, y, buffer[x, y] ? Color.DarkGreen : Color.Black);
 		}
 
 		// Misc has its own dictionary because it's full of random stuff.
