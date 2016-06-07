@@ -28,13 +28,14 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pbScreen = new PictureBoxWithInterpolationMode();
+			this.pbScreen = new DanTup.DaChip8.PictureBoxWithInterpolationMode();
 			((System.ComponentModel.ISupportInitialize)(this.pbScreen)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// pbScreen
 			// 
 			this.pbScreen.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pbScreen.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 			this.pbScreen.Location = new System.Drawing.Point(0, 0);
 			this.pbScreen.Name = "pbScreen";
 			this.pbScreen.Size = new System.Drawing.Size(640, 320);
@@ -42,7 +43,7 @@
 			this.pbScreen.TabIndex = 0;
 			this.pbScreen.TabStop = false;
 			// 
-			// DaChip8
+			// Screen
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -51,7 +52,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "DaChip8";
+			this.Name = "Screen";
 			this.Text = "DaChip8";
 			((System.ComponentModel.ISupportInitialize)(this.pbScreen)).EndInit();
 			this.ResumeLayout(false);
