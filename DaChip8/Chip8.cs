@@ -8,6 +8,7 @@ namespace DanTup.DaChip8
 	class Chip8
 	{
 		Bitmap screen; // 64x32
+		bool[,] buffer = new bool[64, 32];
 
 		// Registers
 		byte[] V = new byte[16];
@@ -289,7 +290,28 @@ namespace DanTup.DaChip8
 		/// </summary>
 		void DrawSprite(OpCodeData data)
 		{
-			// TODO: ...
+			for (var i = 0; i < data.N; i++)
+			{
+				var spriteLine = RAM[I + i]; // A line of the sprite to render
+
+				for (var bit = 0; bit < 8; bit++)
+				{
+					var x = data.X + bit;
+					var y = data.Y + i;
+
+					var spriteBit = ((spriteLine >> bit) & 1);
+					var oldBit = buffer[x, y] ? 1 : 0;
+
+					// New bit is XOR of existing and new.
+					var newBit = oldBit ^ spriteBit;
+
+					buffer[data.X + bit, data.Y + i] = newBit != 0;
+
+					// If we wiped out a pixel, set flag for collission.
+					if (oldBit != 0 && newBit == 0)
+						V[0xF] = 1;
+				}
+			}
 		}
 
 		/// <summary>
