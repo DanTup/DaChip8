@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pbScreen = new System.Windows.Forms.PictureBox();
+			this.pbScreen = new PictureBoxWithInterpolationMode();
 			((System.ComponentModel.ISupportInitialize)(this.pbScreen)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -60,7 +60,7 @@
 
 		#endregion
 
-		private System.Windows.Forms.PictureBox pbScreen;
+		private PictureBoxWithInterpolationMode pbScreen;
 	}
 }
 

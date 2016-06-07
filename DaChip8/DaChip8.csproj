@@ -47,6 +47,9 @@
     <Compile Include="Chip8.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="OpCodeData.cs" />
+    <Compile Include="PictureBoxWithInterpolationMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Screen.cs">
       <SubType>Form</SubType>
     </Compile>
