@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 
 namespace DanTup.DaChip8
@@ -114,7 +113,7 @@ namespace DanTup.DaChip8
 			// Read the two bytes of OpCode (big endian).
 			var opCode = (ushort)(RAM[PC++] << 8 | RAM[PC++]);
 
-			Debug.WriteLine(PC.ToString("X4") + ": " + opCode.ToString("X4"));
+			//Debug.WriteLine(PC.ToString("X4") + ": " + opCode.ToString("X4"));
 
 			// Split data into the possible formats the instruction might need.
 			// https://en.wikipedia.org/wiki/CHIP-8#Opcode_table
@@ -134,7 +133,7 @@ namespace DanTup.DaChip8
 
 		public void Tick60Hz()
 		{
-			Debug.WriteLine("60Hz tick");
+			//Debug.WriteLine("60Hz tick");
 			if (Delay > 0)
 				Delay--;
 			if (Sound > 0)
@@ -303,6 +302,7 @@ namespace DanTup.DaChip8
 		{
 			var startX = V[data.X];
 			var startY = V[data.Y];
+			//Debug.WriteLine(string.Format("Drawing {0}-line sprite from {1} at {2}, {3}", data.N, I, startX, startY));
 
 			V[0xF] = 0;
 			for (var i = 0; i < data.N; i++)
