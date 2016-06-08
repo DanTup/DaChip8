@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 
 namespace DanTup.DaChip8
 {
@@ -352,7 +353,7 @@ namespace DanTup.DaChip8
 		{
 			// If we have a key pressed, store it and more on.
 			if (pressedKeys.Count != 0)
-				V[data.X] = pressedKeys.GetEnumerator().Current;
+				V[data.X] = pressedKeys.First();
 			else
 				// Otherwise, wind the PC back so we will keep executing this instruction.
 				PC -= 2;
