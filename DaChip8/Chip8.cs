@@ -150,7 +150,11 @@ namespace DanTup.DaChip8
 		}
 
 		// Misc has its own dictionary because it's full of random stuff.
-		void Misc(OpCodeData data) => opCodesMisc[data.NN](data);
+		void Misc(OpCodeData data)
+		{
+			if (opCodesMisc.ContainsKey(data.NN))
+				opCodesMisc[data.NN](data);
+		}
 
 		public void KeyDown(byte key) => pressedKeys.Add(key);
 		public void KeyUp(byte key) => pressedKeys.Remove(key);
