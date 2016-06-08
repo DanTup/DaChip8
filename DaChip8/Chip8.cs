@@ -113,7 +113,7 @@ namespace DanTup.DaChip8
 			// Read the two bytes of OpCode (big endian).
 			var opCode = (ushort)(RAM[PC++] << 8 | RAM[PC++]);
 
-			//Debug.WriteLine(PC.ToString("X4") + ": " + opCode.ToString("X4"));
+			//Debug.WriteLine((PC - 2).ToString("X4") + ": " + opCode.ToString("X4"));
 
 			// Split data into the possible formats the instruction might need.
 			// https://en.wikipedia.org/wiki/CHIP-8#Opcode_table
