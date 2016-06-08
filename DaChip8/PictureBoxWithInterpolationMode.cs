@@ -10,6 +10,7 @@ namespace DanTup.DaChip8
 
 		protected override void OnPaint(PaintEventArgs paintEventArgs)
 		{
+			paintEventArgs.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			paintEventArgs.Graphics.InterpolationMode = InterpolationMode;
 			base.OnPaint(paintEventArgs);
 		}

@@ -311,10 +311,10 @@ namespace DanTup.DaChip8
 
 				for (var bit = 0; bit < 8; bit++)
 				{
-					var x = (startX + (8 - bit)) % screen.Width;
+					var x = (startX + bit) % screen.Width;
 					var y = (startY + i) % screen.Height;
 
-					var spriteBit = ((spriteLine >> bit) & 1);
+					var spriteBit = ((spriteLine >> (7 - bit)) & 1);
 					var oldBit = buffer[x, y] ? 1 : 0;
 
 					// New bit is XOR of existing and new.
