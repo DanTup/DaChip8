@@ -404,7 +404,7 @@ namespace DanTup.DaChip8
 		/// </summary>
 		void SaveX(OpCodeData data)
 		{
-			for (var i = 0; i < 16; i++)
+			for (var i = 0; i <= data.X; i++)
 				RAM[I + i] = V[i];
 		}
 
@@ -413,7 +413,7 @@ namespace DanTup.DaChip8
 		/// </summary>
 		void LoadX(OpCodeData data)
 		{
-			for (var i = 0; i < 16; i++)
+			for (var i = 0; i <= data.X; i++)
 				V[i] = RAM[I + i];
 		}
 
