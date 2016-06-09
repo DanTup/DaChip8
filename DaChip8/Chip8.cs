@@ -14,7 +14,7 @@ namespace DanTup.DaChip8
 		// Registers
 		byte[] V = new byte[16];
 		// Timers
-		byte Delay, Sound;
+		byte Delay;
 		// Address/Program Counters
 		ushort I, PC = 0x200;
 		// Stack
@@ -137,8 +137,6 @@ namespace DanTup.DaChip8
 			//Debug.WriteLine("60Hz tick");
 			if (Delay > 0)
 				Delay--;
-			if (Sound > 0)
-				Sound--;
 
 			UpdateScreen();
 		}
@@ -370,9 +368,9 @@ namespace DanTup.DaChip8
 		void SetDelay(OpCodeData data) => Delay = V[data.X];
 
 		/// <summary>
-		/// Sets the sound register to V[x].
+		/// Play sound for V[x] 60ths of a second.
 		/// </summary>
-		void SetSound(OpCodeData data) => Sound = V[data.X];
+		void SetSound(OpCodeData data) => Console.Beep(500, (int)(V[data.X] * (1000f / 60)));
 
 		/// <summary>
 		/// Adds V[x] to register I.
