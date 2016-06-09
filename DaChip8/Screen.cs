@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DanTup.DaChip8
@@ -16,7 +18,8 @@ namespace DanTup.DaChip8
 
 		// For timing..
 		readonly Stopwatch stopWatch = Stopwatch.StartNew();
-		readonly TimeSpan targetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / 60);
+		readonly TimeSpan targetElapsedTime60Hz = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / 60);
+		readonly TimeSpan targetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / 1000);
 		TimeSpan lastTime;
 
 		public Screen()
@@ -29,9 +32,10 @@ namespace DanTup.DaChip8
 			chip8 = new Chip8(screen);
 			chip8.LoadProgram(File.ReadAllBytes(ROM));
 
-			Application.Idle += IdleTick;
 			KeyDown += SetKeyDown;
 			KeyUp += SetKeyUp;
+
+			StartGameLoop();
 		}
 
 		Dictionary<Keys, byte> keyMapping = new Dictionary<Keys, byte>
@@ -66,20 +70,29 @@ namespace DanTup.DaChip8
 				chip8.KeyUp(keyMapping[e.KeyCode]);
 		}
 
-		void IdleTick(object sender, EventArgs e)
+		void StartGameLoop()
 		{
-			var currentTime = stopWatch.Elapsed;
-			var elapsedTime = currentTime - lastTime;
+			Task.Run(GameLoop);
+		}
 
-			while (elapsedTime >= targetElapsedTime)
+		Task GameLoop()
+		{
+			while (true)
 			{
-				Tick60Hz();
-				elapsedTime -= targetElapsedTime;
-				lastTime += targetElapsedTime;
-			}
+				var currentTime = stopWatch.Elapsed;
+				var elapsedTime = currentTime - lastTime;
 
-			Tick();
-			Invalidate();
+				while (elapsedTime >= targetElapsedTime60Hz)
+				{
+					this.Invoke((Action)Tick60Hz);
+					elapsedTime -= targetElapsedTime60Hz;
+					lastTime += targetElapsedTime60Hz;
+				}
+
+				this.Invoke((Action)Tick);
+
+				Thread.Sleep(targetElapsedTime);
+			}
 		}
 
 		void Tick() => chip8.Tick();
