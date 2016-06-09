@@ -13,8 +13,7 @@ namespace DanTup.DaChip8
 	{
 		readonly Chip8 chip8;
 		readonly Bitmap screen;
-		readonly string ROM = "../../../ROMs/Chip-8 Pack/Chip-8 Programs/Chip8 Picture.ch8";
-		//readonly string ROM = "../../../ROMs/Chip-8 Pack/Chip-8 Programs/Keypad Test [Hap, 2006].ch8";
+		readonly string ROM = "../../../ROMs/Chip-8 Pack/Chip-8 Games/Breakout (Brix hack) [David Winter, 1997].ch8";
 
 		// For timing..
 		readonly Stopwatch stopWatch = Stopwatch.StartNew();
