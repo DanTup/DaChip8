@@ -34,7 +34,10 @@ namespace DanTup.DaChip8
 
 			KeyDown += SetKeyDown;
 			KeyUp += SetKeyUp;
+		}
 
+		protected override void OnLoad(EventArgs e)
+		{
 			StartGameLoop();
 		}
 
