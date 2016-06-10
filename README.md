@@ -1,4 +1,5 @@
-# DaChip8
+# DaChip8 [![Build status](https://ci.appveyor.com/api/projects/status/github/DanTup/DaChip8?svg=true)](https://ci.appveyor.com/project/DanTup/dachip8)
+
 [DanTup](https://github.com/DanTup/)'s attempt to make a CHIP-8 interpreter in C#.
 
 ## ROMs
