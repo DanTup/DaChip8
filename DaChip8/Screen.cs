@@ -28,7 +28,7 @@ namespace DanTup.DaChip8
 			screen = new Bitmap(64, 32);
 			pbScreen.Image = screen;
 
-			chip8 = new Chip8(screen);
+			chip8 = new Chip8(Draw, Beep);
 			chip8.LoadProgram(File.ReadAllBytes(ROM));
 
 			KeyDown += SetKeyDown;
@@ -38,6 +38,18 @@ namespace DanTup.DaChip8
 		protected override void OnLoad(EventArgs e)
 		{
 			StartGameLoop();
+		}
+
+		void Draw(bool[,] buffer)
+		{
+			for (var x = 0; x < screen.Width; x++)
+				for (var y = 0; y < screen.Height; y++)
+					screen.SetPixel(x, y, buffer[x, y] ? Color.DarkGreen : Color.Black);
+		}
+
+		void Beep(int milliseconds)
+		{
+			Console.Beep(500, milliseconds);
 		}
 
 		Dictionary<Keys, byte> keyMapping = new Dictionary<Keys, byte>
