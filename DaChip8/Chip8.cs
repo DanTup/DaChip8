@@ -325,8 +325,6 @@ namespace DanTup.DaChip8
 		/// </summary>
 		void DrawSprite(OpCodeData data)
 		{
-			needsRedraw = true;
-
 			var startX = V[data.X];
 			var startY = V[data.Y];
 			//Debug.WriteLine(string.Format("Drawing {0}-line sprite from {1} at {2}, {3}", data.N, I, startX, startY));
@@ -338,6 +336,9 @@ namespace DanTup.DaChip8
 				{
 					if (pendingClearBuffer[x, y])
 					{
+						if (buffer[x, y])
+							needsRedraw = true;
+
 						pendingClearBuffer[x, y] = false;
 						buffer[x, y] = false;
 					}
@@ -356,6 +357,9 @@ namespace DanTup.DaChip8
 
 					var spriteBit = ((spriteLine >> (7 - bit)) & 1);
 					var oldBit = buffer[x, y] ? 1 : 0;
+
+					if (oldBit != spriteBit)
+						needsRedraw = true;
 
 					// New bit is XOR of existing and new.
 					var newBit = oldBit ^ spriteBit;
