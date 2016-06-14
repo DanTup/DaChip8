@@ -15,6 +15,8 @@ namespace DanTup.DaChip8
 		// To reduce flicker, we delay clearing pixels by a frame
 		bool[,] pendingClearBuffer = new bool[ScreenWidth, ScreenHeight];
 
+		bool needsRedraw = true;
+
 		// Registers
 		byte[] V = new byte[16];
 		// Timers
@@ -142,7 +144,11 @@ namespace DanTup.DaChip8
 			if (Delay > 0)
 				Delay--;
 
-			draw(buffer);
+			if (needsRedraw)
+			{
+				needsRedraw = false;
+				draw(buffer);
+			}
 		}
 
 		// Misc has its own dictionary because it's full of random stuff.
@@ -319,6 +325,8 @@ namespace DanTup.DaChip8
 		/// </summary>
 		void DrawSprite(OpCodeData data)
 		{
+			needsRedraw = true;
+
 			var startX = V[data.X];
 			var startY = V[data.Y];
 			//Debug.WriteLine(string.Format("Drawing {0}-line sprite from {1} at {2}, {3}", data.N, I, startX, startY));
