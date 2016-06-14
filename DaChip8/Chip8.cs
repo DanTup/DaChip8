@@ -13,6 +13,9 @@ namespace DanTup.DaChip8
 		Action<int> beep;
 		bool[,] buffer = new bool[ScreenWidth, ScreenHeight];
 
+		// To reduce flicker, we delay clearing pixels by a frame
+		bool[,] pendingClearBuffer = new bool[ScreenWidth, ScreenHeight];
+
 		// Registers
 		byte[] V = new byte[16];
 		// Timers
@@ -321,6 +324,19 @@ namespace DanTup.DaChip8
 			var startY = V[data.Y];
 			Debug.WriteLine(string.Format("Drawing {0}-line sprite from {1} at {2}, {3}", data.N, I, startX, startY));
 
+			// Write any pending clears
+			for (var x = 0; x < ScreenWidth; x++)
+			{
+				for (var y = 0; y < ScreenHeight; y++)
+				{
+					if (pendingClearBuffer[x, y])
+					{
+						pendingClearBuffer[x, y] = false;
+						buffer[x, y] = false;
+					}
+				}
+			}
+
 			V[0xF] = 0;
 			for (var i = 0; i < data.N; i++)
 			{
@@ -337,7 +353,10 @@ namespace DanTup.DaChip8
 					// New bit is XOR of existing and new.
 					var newBit = oldBit ^ spriteBit;
 
-					buffer[x, y] = newBit != 0;
+					if (newBit != 0)
+						buffer[x, y] = true;
+					else // Otherwise write a pending clear
+						pendingClearBuffer[x, y] = true;
 
 					// If we wiped out a pixel, set flag for collission.
 					if (oldBit != 0 && newBit == 0)
