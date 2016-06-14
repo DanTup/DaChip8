@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,9 +43,27 @@ namespace DanTup.DaChip8
 
 		void Draw(bool[,] buffer)
 		{
-			for (var x = 0; x < screen.Width; x++)
+			var bits = screen.LockBits(new Rectangle(0, 0, screen.Width, screen.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				byte* pointer = (byte*)bits.Scan0;
+
 				for (var y = 0; y < screen.Height; y++)
-					screen.SetPixel(x, y, buffer[x, y] ? Color.DarkGreen : Color.Black);
+				{
+					for (var x = 0; x < screen.Width; x++)
+					{
+						pointer[0] = 0; // Blue
+						pointer[1] = buffer[x, y] ? (byte)0x64 : (byte)0; // Green
+						pointer[2] = 0; // Red
+						pointer[3] = 255; // Alpha
+
+						pointer += 4; // 4 bytes per pixel
+					}
+				}
+			}
+
+			screen.UnlockBits(bits);
 		}
 
 		void Beep(int milliseconds)
